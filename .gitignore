@@ -1,4 +1,6 @@
 .vs/
 .vs/*
+Release/*
+Debug/*
 Release/
 Debug/
