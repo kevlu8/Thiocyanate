@@ -41,6 +41,7 @@ DWORD WINAPI p4 pp {
 		PatBlt(hdc, random(p->x), random(p->y), random(p->x), random(p->y), PATINVERT);
 		Sleep(random(1000));
 	}
+	ReleaseDC(NULL, hdc);
 	DeleteObject(brush);
 	ExitThread(0);
 }
@@ -60,3 +61,26 @@ DWORD WINAPI p6 pp {
 	}
 	ExitThread(0);
 }
+
+// shoutout @clxyify on github for p7 and p8 ideas
+
+DWORD WINAPI p7 pp {
+	// turn screen grayscale
+}
+
+DWORD WINAPI p8 pp {
+	// freeze screen for x seconds
+	HBITMAP screen = CreateCompatibleBitmap(p->hdc, p->x, p->y);
+	HBRUSH brush = CreatePatternBrush(screen);
+	HDC hdc = GetDC(NULL);
+	SelectObject(hdc, brush);
+	ULONGLONG start = GetTickCount64();
+	while (GetTickCount64() - start < /*random(4096)*/4000) {
+		PatBlt(p->hdc, 0, 0, p->x, p->y, PATCOPY);
+	}
+	ReleaseDC(NULL, hdc);
+	DeleteObject(brush);
+	DeleteObject(screen);
+	ExitThread(0);
+}
+
